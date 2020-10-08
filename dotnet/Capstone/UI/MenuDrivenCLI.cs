@@ -8,7 +8,7 @@ namespace Capstone
     {
         public void Output(string message)
         {
-            Console.WriteLine();
+            Console.WriteLine();  
             Console.WriteLine(message);
         }
 
