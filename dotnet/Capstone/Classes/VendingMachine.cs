@@ -9,7 +9,8 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        bool isOn = false;
+        public bool isOn { get; private set; } = false;
+
         public List<VendingItem> InventoryList { get; private set; } = new List<VendingItem>();
 
         public VendingMachine()
@@ -17,22 +18,46 @@ namespace Capstone
 
         }
 
+        public void turnOnMachine()
+        {
+            isOn = true;
+        }
+
+        public void Display()
+        {
+            for (int i = 0; i < InventoryList.Count; i++ )
+            {
+                int itemNumber = i + 1;
+                Console.WriteLine(itemNumber + ") " + InventoryList[i].Slot + " " + InventoryList[i].Name + " " + InventoryList[i].Price + " " + InventoryList[i].Type);
+            }
+        }
+
+
+
         public void ReadInventoryFile()
         {
-            string directory = Environment.CurrentDirectory;
-            string inputFile = "Inventory.txt";
-            string fullPath = Path.Combine(directory, inputFile);
-
-            using (StreamReader sr = new StreamReader(fullPath))
+            if (isOn)
             {
-                while (!sr.EndOfStream)
+                string directory = Environment.CurrentDirectory;
+                string inputFile = "Inventory.txt";
+                string fullPath = Path.Combine(directory, inputFile);
+
+                using (StreamReader sr = new StreamReader(fullPath))
+                   
+
                 {
-                    string line = sr.ReadLine();
-                    string[] inventoryArray = line.Split("|");
-                    VendingItem newItem = new VendingItem(inventoryArray[0], inventoryArray[1], decimal.Parse(inventoryArray[2]), inventoryArray[3]);
-                    InventoryList.Add(newItem);
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        string[] inventoryArray = line.Split("|");
+                        VendingItem newItem = new VendingItem(inventoryArray[0], inventoryArray[1], decimal.Parse(inventoryArray[2]), inventoryArray[3]);
+                        InventoryList.Add(newItem);
+                    }
+
                 }
             }
+
+
         }
     }
 }

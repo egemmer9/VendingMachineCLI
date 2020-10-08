@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Capstone.Classes
 {
@@ -21,8 +22,9 @@ namespace Capstone.Classes
             Name = name;
             Price = price;
             Type = type;
-            InventoryCount = 0;
+            InventoryCount = 5;
             Slot = slot;
         }
+
     }
 }

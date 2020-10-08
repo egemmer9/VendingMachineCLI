@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Classes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,13 +24,14 @@ namespace Capstone
         /// </summary>
         /// <param name="options">Everything is an object so an array of anything is ok. But it must have ToString</param>
         /// <returns></returns>
-        public Object PromptForSelection(Object[] options)
+        public Object PromptForSelection (Object[] options)
         {
             Object choice = null;
             while(choice==null)
             {
                 DisplayMenuOptions(options);
                 choice = GetChoiceFromUserInput(options);
+
             }
 
             return choice;
@@ -71,10 +73,13 @@ namespace Capstone
         {
 
             Console.WriteLine();
+
+
             for (int i = 0; i < options.Length; i++)
             {
                 int optionNum = i + 1;
                 Console.WriteLine(optionNum + ") " + options[i]);
+
             }
             Console.WriteLine("Please choose an option >>>");
         }
