@@ -13,10 +13,13 @@ namespace Capstone
         decimal itemPrice = 0;
         private Balance balance = new Balance();
         private VendingMachine vendingMachine = new VendingMachine();
+        private AuditFile auditFile = new AuditFile();
+        private SalesReport salesReport = new SalesReport();
         private const string MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
     	private const string MAIN_MENU_OPTION_PURCHASE = "Purchase";
         private const string MAIN_MENU_OPTION_FEED_MONEY = "Feed Money";
         private const string MAIN_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
+        //private const string MAIN_MENU_OPTION_SALES_REPORT = "";
 	    private readonly string[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_FEED_MONEY, MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_FINISH_TRANSACTION}; //const has to be known at compile time, the array initializer is not const in C#
 
         private readonly IBasicUserInterface ui = new MenuDrivenCLI();
@@ -48,7 +51,9 @@ namespace Capstone
                     else if (selection == MAIN_MENU_OPTION_PURCHASE)
                     {
                         //do the purchase (probably should call a method to do this too)
-                        Purchase();                        
+                        Purchase();
+                        auditFile.LogPurchase(vendingMachine.InventoryList[intItemSelect].Name, vendingMachine.InventoryList[intItemSelect].Slot, itemPrice, balance.currentBalance);
+                        //salesReport.IncreaseSales(vendingMachine.InventoryList[intItemSelect].Name, itemPrice);
                     }
                     else if (selection == MAIN_MENU_OPTION_FEED_MONEY)
                     {
@@ -62,13 +67,20 @@ namespace Capstone
                         {
                             balance.addMoney(feedMoney);
                             Console.WriteLine("Current Balance: {0:C}", balance.currentBalance);
+                            auditFile.LogFeedMoney(feedMoney, balance.currentBalance);
                         }
                     }
                     else if (selection == MAIN_MENU_OPTION_FINISH_TRANSACTION)
                     {
+                        auditFile.LogFinishTransaction(balance.currentBalance);
                         Console.WriteLine(balance.FinishTransaction());
                         Console.WriteLine("Current balance: {0:C}", balance.currentBalance);
+                        break;
                     }
+                    //else if (selection == "A4 B4 C4 D4")
+                    //{
+                    //    salesReport.WriteToSalesReport();
+                    //}
                 }
             }
             catch (Exception)
@@ -81,7 +93,6 @@ namespace Capstone
         {
             for (int i = 0; i < vendingMachine.InventoryList.Count; i++)
             {
-                //int itemNumber = i + 1;
                 if (vendingMachine.InventoryList[i].InventoryCount > 0)
                 {
                     Console.WriteLine(vendingMachine.InventoryList[i].Slot + " " + vendingMachine.InventoryList[i].Name + " " + vendingMachine.InventoryList[i].Price + " " + vendingMachine.InventoryList[i].Type);
