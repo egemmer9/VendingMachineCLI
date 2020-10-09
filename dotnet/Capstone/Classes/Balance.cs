@@ -18,14 +18,7 @@ namespace Capstone.Classes
 
         public void Purchase(decimal itemCost)
         {
-            if ((currentBalance - itemCost) >= 0)
-            {
-                currentBalance = currentBalance - itemCost;
-            }
-            else
-            {
-                Console.WriteLine("Insufficient Funds!");
-            }
+            currentBalance = currentBalance - itemCost;           
         }
 
         public string FinishTransaction()

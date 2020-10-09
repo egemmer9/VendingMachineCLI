@@ -23,17 +23,6 @@ namespace Capstone
             isOn = true;
         }
 
-        public void Display()
-        {
-            for (int i = 0; i < InventoryList.Count; i++ )
-            {
-                int itemNumber = i + 1;
-                Console.WriteLine(itemNumber + ") " + InventoryList[i].Slot + " " + InventoryList[i].Name + " " + InventoryList[i].Price + " " + InventoryList[i].Type);
-            }
-        }
-
-
-
         public void ReadInventoryFile()
         {
             if (isOn)
