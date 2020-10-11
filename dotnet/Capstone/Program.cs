@@ -79,7 +79,7 @@ namespace Capstone
                     }
                     //else if (selection == "A4 B4 C4 D4")
                     //{
-                    //    salesReport.WriteToSalesReport();
+                    //    salesReport.WriteSalesReport();
                     //}
                 }
             }
@@ -111,28 +111,28 @@ namespace Capstone
                 {
                     balance.Purchase(itemPrice);
                     vendingMachine.InventoryList[intItemSelect].InventoryCount--;
-                    Console.WriteLine("Vending Item");
+                    Console.WriteLine(" *Vending Item*");
                     if (vendingMachine.InventoryList[intItemSelect].Type == "Chip")
                     {
-                        Console.WriteLine("Crunch Crunch, Yum!");
+                        Console.WriteLine(" *Crunch Crunch, Yum!*");
                     }
                     else if (vendingMachine.InventoryList[intItemSelect].Type == "Candy")
                     {
-                        Console.WriteLine("Munch Munch, Yum!");
+                        Console.WriteLine(" *Munch Munch, Yum!*");
                     }
                     else if (vendingMachine.InventoryList[intItemSelect].Type == "Drink")
                     {
-                        Console.WriteLine("Glug Glug, Yum!");
+                        Console.WriteLine(" *Glug Glug, Yum!*");
                     }
                     else if (vendingMachine.InventoryList[intItemSelect].Type == "Gum")
                     {
-                        Console.WriteLine("Chew Chew, Yum!");
+                        Console.WriteLine(" *Chew Chew, Yum!*");
                     }
                     Console.WriteLine("Current Balance: {0:C}", balance.currentBalance);
                 }
                 else
                 {
-                    Console.WriteLine("Insufficient Funds!");
+                    Console.WriteLine(" *Insufficient Funds!*");
                 }
             }
             else
@@ -213,7 +213,7 @@ namespace Capstone
                     itemPrice = vendingMachine.InventoryList[intItemSelect].Price;
             }else
             {
-                Console.WriteLine("*Item selection requires a balance greater than zero*");
+                Console.WriteLine(" *Item selection requires a balance greater than zero*");
             }
         }
     }

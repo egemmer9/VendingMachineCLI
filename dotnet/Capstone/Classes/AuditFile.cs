@@ -47,7 +47,7 @@ namespace Capstone.Classes
 
             using (StreamWriter sw = new StreamWriter(fullPath, true))
             {
-                sw.WriteLine(now.ToString() + " " + "GIVE CHANGE: " + " {0:C} $0.00", currentBalance);
+                sw.WriteLine(now.ToString() + " " + "GIVE CHANGE: " + "{0:C} $0.00", currentBalance);
             }
         }
     }

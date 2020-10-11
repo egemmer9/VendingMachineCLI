@@ -47,7 +47,7 @@ namespace Capstone.Classes
             }
         }
         
-        public void WriteToSalesReport()
+        public void WriteSalesReport()
         {
             string directory = Environment.CurrentDirectory;
             string fileName = "salesreport.txt";
