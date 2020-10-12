@@ -51,7 +51,7 @@ namespace Capstone
                     else if (selection == MAIN_MENU_OPTION_PURCHASE)
                     {
                         //do the purchase (probably should call a method to do this too)
-                        Purchase();
+                        PurchaseItem();
                         auditFile.LogPurchase(vendingMachine.InventoryList[intItemSelect].Name, vendingMachine.InventoryList[intItemSelect].Slot, itemPrice, balance.currentBalance);
                         //salesReport.IncreaseSales(vendingMachine.InventoryList[intItemSelect].Name, itemPrice);
                     }
@@ -77,7 +77,7 @@ namespace Capstone
                         Console.WriteLine("Current balance: {0:C}", balance.currentBalance);
                         break;
                     }
-                    //else if (selection == "A4 B4 C4 D4")
+                    //else if (itemSelection == "A4 B4 C4 D4")
                     //{
                     //    salesReport.WriteSalesReport();
                     //}
@@ -103,7 +103,7 @@ namespace Capstone
                 }
             }
         }
-        public void Purchase ()
+        public void PurchaseItem()
         {
             if (vendingMachine.InventoryList[intItemSelect].InventoryCount > 0)
             {
@@ -147,7 +147,7 @@ namespace Capstone
                 itemSelection = Console.ReadLine();
                 if (itemSelection == "A1")
                 {
-                    intItemSelect = 0;              
+                    intItemSelect = 0;
                 }
                 else if (itemSelection == "A2")
                 {
@@ -210,8 +210,9 @@ namespace Capstone
                     intItemSelect = 15;
                 }
 
-                    itemPrice = vendingMachine.InventoryList[intItemSelect].Price;
-            }else
+                itemPrice = vendingMachine.InventoryList[intItemSelect].Price;
+            }
+            else
             {
                 Console.WriteLine(" *Item selection requires a balance greater than zero*");
             }

@@ -13,8 +13,24 @@ namespace Capstone.Classes
         }
 
         private decimal total = 0;
+        private int potatoCrispsCount = 0;
+        private int stackersCount = 0;
+        private int grainWavesCount = 0;
+        private int cloudPopcornCount = 0;
+        private int moonpieCount = 0;
+        private int cowtalesCount = 0;
+        private int wonkaBarCount = 0;
+        private int crunchieCount = 0;
+        private int colaCount = 0;
+        private int drSaltCount = 0;
+        private int mountainMelterCount = 0;
+        private int heavyCount = 0;
+        private int uChewsCount = 0;
+        private int littleLeagueChewCount = 0;
+        private int chicletsCount = 0;
+        private int tripleMintCount = 0;
 
-        public Dictionary<string, int> SRDictionary { get; set; } = new Dictionary<string, int>
+        /*public Dictionary<string, int> SRDictionary { get; set; } = new Dictionary<string, int>
         {
                     {"Potato Crisps", 0 },
                     {"Stackers", 0 },
@@ -33,20 +49,86 @@ namespace Capstone.Classes
                     {"Chiclets", 0 },
                     {"Triplemint", 0 }
                 };
+        */
 
         public void IncreaseSales(string userSelection, decimal itemPrice)
         {
-            
             total += itemPrice;
-            foreach (KeyValuePair<string, int> item in SRDictionary)
+
+            if (userSelection == "Potato Crisps")
+            {
+                potatoCrispsCount++;
+            }
+            else if (userSelection == "Stackers")
+            {
+                stackersCount++;
+            }
+            else if (userSelection == "Grain Waves")
+            {
+                grainWavesCount++;
+            }
+            else if (userSelection == "Cloud Popcorn")
+            {
+                cloudPopcornCount++;
+            }
+            else if (userSelection == "Moonpie")
+            {
+                moonpieCount++;
+            }
+            else if (userSelection == "Cowtales")
+            {
+                cowtalesCount++;
+            }
+            else if (userSelection == "Wonka Bar")
+            {
+                wonkaBarCount++;
+            }
+            else if (userSelection == "Crunchie")
+            {
+                crunchieCount++;
+            }
+            else if (userSelection == "Cola")
+            {
+                colaCount++;
+            }
+            else if (userSelection == "Dr. Salt")
+            {
+                drSaltCount++;
+            }
+            else if (userSelection == "Mountain Melter")
+            {
+                mountainMelterCount++;
+            }
+            else if (userSelection == "Heavy")
+            {
+                heavyCount++;
+            }
+            else if (userSelection == "U-Chews")
+            {
+                uChewsCount++;
+            }
+            else if (userSelection == "Little League Chew")
+            {
+                littleLeagueChewCount++;
+            }
+            else if (userSelection == "Chiclets")
+            {
+                chicletsCount++;
+            }
+            else if (userSelection == "Triplemint")
+            {
+                tripleMintCount++;
+            }
+            
+            /*foreach (KeyValuePair<string, int> item in SRDictionary)
             {
                 if (userSelection == item.Key)
                 {
                     SRDictionary[item.Key]++;
                 }
-            }
+            }*/
         }
-        
+
         public void WriteSalesReport()
         {
             string directory = Environment.CurrentDirectory;
@@ -56,34 +138,61 @@ namespace Capstone.Classes
             using (StreamWriter sw = new StreamWriter(fullPath, true))
             {
 
-                foreach (KeyValuePair<string, int> item in SRDictionary)
+                /*foreach (KeyValuePair<string, int> item in SRDictionary)
                 {
                     sw.WriteLine(item.Key + " | " + item.Value);
                     Console.WriteLine(item.Key + " | " + item.Value);
-                }
+                }*/
+                sw.WriteLine("Potato Crisps | " + potatoCrispsCount);
+                Console.WriteLine("Potato Crisps | " + potatoCrispsCount);
+
+                sw.WriteLine("Stackers | " + stackersCount);
+                Console.WriteLine("Stackers | " + stackersCount);
+
+                sw.WriteLine("Grain Waves | " + grainWavesCount);
+                Console.WriteLine("Grain Waves | " + grainWavesCount);
+
+                sw.WriteLine("Cloud Popcorn | " + cloudPopcornCount);
+                Console.WriteLine("Cloud Popcorn | " + cloudPopcornCount);
+
+                sw.WriteLine("Moonpie | " + moonpieCount);
+                Console.WriteLine("Moonpie | " + moonpieCount);
+
+                sw.WriteLine("Cowtales | " + cowtalesCount);
+                Console.WriteLine("Cowtales | " + cowtalesCount);
+
+                sw.WriteLine("Wonka Bar | " + wonkaBarCount);
+                Console.WriteLine("Wonka Bar | " + wonkaBarCount);
+
+                sw.WriteLine("Crunchie | " + crunchieCount);
+                Console.WriteLine("Crunchie | " + crunchieCount);
+
+                sw.WriteLine("Cola | " + colaCount);
+                Console.WriteLine("Cola | " + colaCount);
+
+                sw.WriteLine("Dr. Salt | " + drSaltCount);
+                Console.WriteLine("Dr. Salt | " + drSaltCount);
+
+                sw.WriteLine("Mountain Melter | " + mountainMelterCount);
+                Console.WriteLine("Mountain Melter | " + mountainMelterCount);
+
+                sw.WriteLine("Heavy | " + heavyCount);
+                Console.WriteLine("Heavy | " + heavyCount);
+
+                sw.WriteLine("U-Chews | " + uChewsCount);
+                Console.WriteLine("U-Chews | " + uChewsCount);
+
+                sw.WriteLine("Little League Chew | " + littleLeagueChewCount);
+                Console.WriteLine("Little League Chew | " + littleLeagueChewCount);
+
+                sw.WriteLine("Chiclets | " + chicletsCount);
+                Console.WriteLine("Chiclets | " + chicletsCount);
+
+                sw.WriteLine("Triplemint | " + tripleMintCount);
+                Console.WriteLine("Triplemint | " + tripleMintCount);
+
                 sw.WriteLine("**TOTAL SALES** "+ total);
                 Console.WriteLine("**TOTAL SALES** " + total);
-
-                /*
-                int potatoCrispsCount = 0;
-                int stackersCount = 0;
-                int grainWavesCount = 0;
-                int cloudPopcornCount = 0;
-                int moonpieCount = 0;
-                int cowtailsCount = 0;
-                int wonkaBarCount = 0;
-                int crunchieCount = 0;
-                int colaCount = 0;
-                int drSaltCount = 0;
-                int mountainMelterCount = 0;
-                int heavyCount = 0;
-                int uChewsCount = 0;
-                int littleLeagueChew = 0;
-                int chicletsCount = 0;
-                int tripleMintCount = 0;
-                */
-
-
             }
         }
     }
