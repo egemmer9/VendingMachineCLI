@@ -26,5 +26,25 @@ namespace Capstone.Classes
             Slot = slot;
         }
 
+        public string MakeNoise()
+        {
+            if (this.Type == "Chip")
+            {
+                return " *Crunch Crunch, Yum!*";
+            }
+            else if (this.Type == "Candy")
+            {
+                return " *Munch Munch, Yum!*";
+            }
+            else if (this.Type == "Drink")
+            {
+                return " *Glug Glug, Yum!*";
+            }
+            else if (this.Type == "Gum")
+            {
+                return " *Chew Chew, Yum!*";
+            }
+            return null;
+        }
     }
 }

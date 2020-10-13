@@ -12,10 +12,15 @@ namespace Capstone
         public bool isOn { get; private set; } = false;
 
         public List<VendingItem> InventoryList { get; private set; } = new List<VendingItem>();
+        public decimal currentBalance { get; private set; }
+        
+        private int intItemSelect = 0;
+        private decimal itemPrice = 0;
+        private bool isValid = false;
 
         public VendingMachine()
         {
-
+            currentBalance = 0;
         }
 
         public void turnOnMachine()
@@ -32,7 +37,7 @@ namespace Capstone
                 string fullPath = Path.Combine(directory, inputFile);
 
                 using (StreamReader sr = new StreamReader(fullPath))
-                   
+
 
                 {
                     while (!sr.EndOfStream)
@@ -47,6 +52,171 @@ namespace Capstone
             }
 
 
+        }
+
+        public void Display()
+        {
+            for (int i = 0; i < InventoryList.Count; i++)
+            {
+                if (InventoryList[i].InventoryCount > 0)
+                {
+                    Console.WriteLine(InventoryList[i].Slot + " " + InventoryList[i].Name + " {0:C} " + InventoryList[i].Type, InventoryList[i].Price);
+                }
+                else
+                {
+                    Console.WriteLine(InventoryList[i].Slot + " " + InventoryList[i].Name + " {0:C} " + InventoryList[i].Type + " ** SOLD OUT **", InventoryList[i].Price);
+                }
+            }
+        }
+
+        public void addMoney()
+        {
+            Console.WriteLine(" *Enter dollar amount to add*");
+            decimal feedMoney;
+            bool validInput = decimal.TryParse(Console.ReadLine(), out feedMoney);
+            if (validInput && feedMoney > 0)
+            {
+                if (!(feedMoney % 1 == 0))
+                {
+                    Console.WriteLine(" *Must enter a whole dollar amount*");
+                }
+                else
+                {
+                    currentBalance = currentBalance + feedMoney;
+                    Console.WriteLine("Current Balance: {0:C}", currentBalance);
+                    LogFeedMoney(feedMoney);
+                }
+            }
+            else
+            {
+                Console.WriteLine(" *Please enter a positive whole number*");
+            }
+        }
+
+        public void Purchase()
+        {
+            if (InventoryList[intItemSelect].InventoryCount > 0)
+            {
+                if ((currentBalance - itemPrice) >= 0 && currentBalance > 0)
+                {
+                    currentBalance = currentBalance - itemPrice;
+                    InventoryList[intItemSelect].InventoryCount--;
+                    Console.WriteLine(" *Vending Item*");
+                    Console.WriteLine(InventoryList[intItemSelect].MakeNoise());
+                    Console.WriteLine("Current Balance: {0:C}", currentBalance);
+                }
+                else
+                {
+                    Console.WriteLine(" *Insufficient Funds!*");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" *Out of stock*");
+            }
+        }
+
+        public string FinishTransaction()
+        {
+            decimal nickels = 0;
+            decimal dimes = 0;
+            decimal quarters = 0;
+
+            decimal change = currentBalance * 100;
+
+            do
+            {
+                if (change >= 25 && change <= (change + 1))
+                {
+                    change = change - 25;
+                    quarters++;
+                }
+                else if (change <= 24 && change > 9)
+                {
+                    change = change - 10;
+                    dimes++;
+                }
+                else if (change == 5)
+                {
+                    change = change - 5;
+                    nickels++;
+                }
+            } while (change > 0);
+
+            currentBalance = 0;
+
+            return "Change due: " + quarters + " quarters, " + dimes + " dimes, and " + nickels + " nickels.";
+        }
+
+        public void ItemSlotSelection()
+        {
+            if (this.currentBalance > 0)
+            {
+                Console.WriteLine(" *Please select an item*");
+                string itemSelection = Console.ReadLine();
+                for(int i = 0; i < InventoryList.Count; i++)
+                {
+                    if(itemSelection == InventoryList[i].Slot)
+                    {
+                        intItemSelect = i;
+                        itemPrice = InventoryList[i].Price;
+                        isValid = true;
+                    }
+                }
+                if (isValid)
+                {
+                    Purchase();
+                    LogPurchase();
+                    isValid = false;
+                }
+                else
+                {
+                    Console.WriteLine(" *Please select a valid item slot*");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" *Item selection requires a balance greater than zero*");
+            }
+        }
+        public void LogFeedMoney(decimal feedMoneyAmount)
+        {
+            string directory = Environment.CurrentDirectory;
+            string fileName = "log.txt";
+            string fullPath = Path.Combine(directory, fileName);
+
+            DateTime now = DateTime.Now;
+
+            using (StreamWriter sw = new StreamWriter(fullPath, true))
+            {
+                sw.WriteLine(now.ToString() + " FEED MONEY: {0:C} {1:C}", feedMoneyAmount, currentBalance);
+            }
+        }
+        public void LogPurchase()
+        {
+            string directory = Environment.CurrentDirectory;
+            string fileName = "log.txt";
+            string fullPath = Path.Combine(directory, fileName);
+
+            DateTime now = DateTime.Now;
+
+            using (StreamWriter sw = new StreamWriter(fullPath, true))
+            {
+                sw.WriteLine(now.ToString() + " " + InventoryList[intItemSelect].Name + " " + InventoryList[intItemSelect].Slot + " {0:C} {1:C}", itemPrice, currentBalance);
+            }
+        }
+        public void LogFinishTransaction()
+        {
+            string directory = Environment.CurrentDirectory;
+            string fileName = "log.txt";
+            string fullPath = Path.Combine(directory, fileName);
+
+            DateTime now = DateTime.Now;
+
+            using (StreamWriter sw = new StreamWriter(fullPath, true))
+            {
+                sw.WriteLine(now.ToString() + " " + "GIVE CHANGE: " + "{0:C} $0.00", currentBalance);
+            }
         }
     }
 }
