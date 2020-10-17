@@ -78,6 +78,10 @@ namespace Capstone
             for (int i = 0; i < options.Length; i++)
             {
                 int optionNum = i + 1;
+                if (optionNum == 4)
+                {
+                    continue;
+                }
                 Console.WriteLine(optionNum + ") " + options[i]);
 
             }

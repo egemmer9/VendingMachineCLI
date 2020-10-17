@@ -9,29 +9,22 @@ namespace Capstone
 {
     public class VendingMachine
     {
-        public bool isOn { get; private set; } = false;
-
         public List<VendingItem> InventoryList { get; private set; } = new List<VendingItem>();
+        public Dictionary<string, int> SalesReportDictionary { get; private set; } = new Dictionary<string, int>();
         public decimal currentBalance { get; private set; }
-        
+
         private int intItemSelect = 0;
         private decimal itemPrice = 0;
         private bool isValid = false;
+        private decimal totalSales = 0;
 
         public VendingMachine()
         {
             currentBalance = 0;
         }
 
-        public void turnOnMachine()
-        {
-            isOn = true;
-        }
-
         public void ReadInventoryFile()
         {
-            if (isOn)
-            {
                 string directory = Environment.CurrentDirectory;
                 string inputFile = "Inventory.txt";
                 string fullPath = Path.Combine(directory, inputFile);
@@ -46,10 +39,10 @@ namespace Capstone
                         string[] inventoryArray = line.Split("|");
                         VendingItem newItem = new VendingItem(inventoryArray[0], inventoryArray[1], decimal.Parse(inventoryArray[2]), inventoryArray[3]);
                         InventoryList.Add(newItem);
+                        SalesReportDictionary[inventoryArray[1]] = 0;
                     }
 
                 }
-            }
 
 
         }
@@ -93,7 +86,39 @@ namespace Capstone
             }
         }
 
-        public void Purchase()
+        public void ItemSlotSelection()
+        {
+            if (this.currentBalance > 0)
+            {
+                Console.WriteLine(" *Please select an item*");
+                string itemSelection = Console.ReadLine();
+                for (int i = 0; i < InventoryList.Count; i++)
+                {
+                    if (itemSelection.ToUpper() == InventoryList[i].Slot)
+                    {
+                        intItemSelect = i;
+                        itemPrice = InventoryList[i].Price;
+                        isValid = true;
+                    }
+                }
+                if (isValid)
+                {
+                    Purchase(itemSelection.ToUpper());
+                    LogPurchase();
+                    isValid = false;
+                }
+                else
+                {
+                    Console.WriteLine(" *Please select a valid item slot*");
+                }
+            }
+            else
+            {
+                Console.WriteLine(" *Item selection requires a balance greater than zero*");
+            }
+        }
+
+        public void Purchase(string itemSelection)
         {
             if (InventoryList[intItemSelect].InventoryCount > 0)
             {
@@ -104,6 +129,7 @@ namespace Capstone
                     Console.WriteLine(" *Vending Item*");
                     Console.WriteLine(InventoryList[intItemSelect].MakeNoise());
                     Console.WriteLine("Current Balance: {0:C}", currentBalance);
+                    IncreaseSales(itemSelection, itemPrice);
                 }
                 else
                 {
@@ -148,37 +174,7 @@ namespace Capstone
             return "Change due: " + quarters + " quarters, " + dimes + " dimes, and " + nickels + " nickels.";
         }
 
-        public void ItemSlotSelection()
-        {
-            if (this.currentBalance > 0)
-            {
-                Console.WriteLine(" *Please select an item*");
-                string itemSelection = Console.ReadLine();
-                for(int i = 0; i < InventoryList.Count; i++)
-                {
-                    if(itemSelection == InventoryList[i].Slot)
-                    {
-                        intItemSelect = i;
-                        itemPrice = InventoryList[i].Price;
-                        isValid = true;
-                    }
-                }
-                if (isValid)
-                {
-                    Purchase();
-                    LogPurchase();
-                    isValid = false;
-                }
-                else
-                {
-                    Console.WriteLine(" *Please select a valid item slot*");
-                }
-            }
-            else
-            {
-                Console.WriteLine(" *Item selection requires a balance greater than zero*");
-            }
-        }
+        //Audit Log methods
         public void LogFeedMoney(decimal feedMoneyAmount)
         {
             string directory = Environment.CurrentDirectory;
@@ -216,6 +212,44 @@ namespace Capstone
             using (StreamWriter sw = new StreamWriter(fullPath, true))
             {
                 sw.WriteLine(now.ToString() + " " + "GIVE CHANGE: " + "{0:C} $0.00", currentBalance);
+            }
+        }
+
+        //Sales Report methods
+        public void IncreaseSales(string userSelection, decimal selectionPrice)
+        {
+            string itemName = null;
+            for (int i = 0; i < InventoryList.Count; i++)
+            {
+                if(InventoryList[i].Slot == userSelection)
+                {
+                    itemName = InventoryList[i].Name;
+                }
+            }
+            if (SalesReportDictionary.ContainsKey(itemName))
+            {
+                SalesReportDictionary[itemName]++;
+                totalSales += selectionPrice;
+            }
+        }
+
+        public void WriteSalesReport()
+        {
+            string directory = Environment.CurrentDirectory;
+            string fileName = "salesreport.txt";
+            string fullPath = Path.Combine(directory, fileName);
+
+            using (StreamWriter sw = new StreamWriter(fullPath, false))
+            {
+                foreach (KeyValuePair<string, int> item in SalesReportDictionary)
+                {
+                    sw.WriteLine(item.Key + " | " + item.Value);
+                    Console.WriteLine(item.Key + " | " + item.Value);
+                }
+                sw.WriteLine();
+                Console.WriteLine();
+                sw.WriteLine("**TOTAL SALES** " + totalSales);
+                Console.WriteLine("**TOTAL SALES** " + totalSales);
             }
         }
     }
