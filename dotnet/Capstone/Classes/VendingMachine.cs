@@ -57,7 +57,7 @@ namespace Capstone
                 }
                 else
                 {
-                    Console.WriteLine(InventoryList[i].Slot + " " + InventoryList[i].Name + " {0:C} " + InventoryList[i].Type + " ** SOLD OUT **", InventoryList[i].Price);
+                    Console.WriteLine("** SOLD OUT **");
                 }
             }
         }
