@@ -24,6 +24,7 @@ namespace Capstone
         static void Main(string[] args)
         {
             Program p = new Program();
+            Console.WriteLine("     **VENDO-MATIC 600**");
             p.Run();
 
         }
